@@ -21,7 +21,8 @@ namespace ConstructionLine.CodingChallenge.Tests
 
             var searchOptions = new SearchOptions
             {
-                Colors = new List<Color> {Color.Red}
+                Colors = new List<Color> {Color.Red},
+                Sizes = new List<Size> {Size.Large}
             };
 
             var results = searchEngine.Search(searchOptions);
