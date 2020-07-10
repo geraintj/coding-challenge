@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ConstructionLine.CodingChallenge
 {
@@ -17,10 +18,29 @@ namespace ConstructionLine.CodingChallenge
 
         public SearchResults Search(SearchOptions options)
         {
-            // TODO: search logic goes here.
+            var colourList = options.Colors.Any() ? options.Colors.Select(c => c.Name).ToList() : Color.All.Select(c => c.Name).ToList();
+            var sizeList = options.Sizes.Any() ? options.Sizes.Select(s => s.Name).ToList() : Size.All.Select(s => s.Name).ToList();
+            var results = _shirts
+                .Where(s => colourList.Contains(s.Color.Name) && sizeList.Contains(s.Size.Name))
+                .ToList();
 
             return new SearchResults
             {
+                Shirts = results,
+                SizeCounts = new List<SizeCount>()
+                {
+                    new SizeCount() { Count = results.Count(r => r.Size.Name == Size.Small.Name), Size = Size.Small},
+                    new SizeCount() { Count = results.Count(r => r.Size.Name == Size.Medium.Name), Size = Size.Medium},
+                    new SizeCount() { Count = results.Count(r => r.Size.Name == Size.Large.Name), Size = Size.Large}
+                },
+                ColorCounts = new List<ColorCount>()
+                {
+                    new ColorCount() { Count = results.Count(r => r.Color.Name == Color.White.Name), Color = Color.White},
+                    new ColorCount() { Count = results.Count(r => r.Color.Name == Color.Red.Name), Color = Color.Red},
+                    new ColorCount() { Count = results.Count(r => r.Color.Name == Color.Blue.Name), Color = Color.Blue},
+                    new ColorCount() { Count = results.Count(r => r.Color.Name == Color.Black.Name), Color = Color.Black},
+                    new ColorCount() { Count = results.Count(r => r.Color.Name == Color.Yellow.Name), Color = Color.Yellow},
+                }
             };
         }
     }
